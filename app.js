@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 
 const indexRouter = require("./src/routes");
 
-// const { CustomError } = require("./utils/customError");
+const { CustomError } = require("./utils/customError");
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/v1", indexRouter);
+app.use("/api", indexRouter);
 
 app.get("/", (req, res) => {
   res.send("Appointment Management API");
@@ -38,18 +38,12 @@ app.get("/", (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err);
 
-  if (err instanceof CustomError) {
-    return res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-      statusCode: err.statusCode,
-    });
-  }
+  const statusCode = err.statusCode || 500;
 
-  return res.status(err.status || 500).json({
+  return res.status(statusCode).json({
     success: false,
     message: err.message || "Internal Server Error",
-    statusCode: err.status || 500,
+    statusCode,
   });
 });
 

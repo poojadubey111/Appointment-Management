@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 const commonFunctions = require("../../utils/commonFunctions");
-const handleSuccess = require("../../utils/handleSuccess");
+const handleSuccess = require("../../utils/successHandler");
 
 const {
   BadRequestError,

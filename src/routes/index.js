@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("API Working");
-});
+router.use("/auth", require("./auth"));
+// router.use("/roles", require("./role"));
+// router.use("/permissions", require("./permission"));
+router.use("/role-permissions", require("./rolePermission"));
+router.use("/users", require("./user"));
+// router.use("/appointments", require("./appointment"));
 
 module.exports = router;

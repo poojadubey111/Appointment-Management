@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-const httpStatus = require("http-status");
+const { default: httpStatus } = require("http-status");
 
 module.exports = {
 

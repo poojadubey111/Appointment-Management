@@ -35,7 +35,10 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-
+// (async () => {
+//   await db.user.sync({ alter: true });
+//   console.log("User synced");
+// })();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
