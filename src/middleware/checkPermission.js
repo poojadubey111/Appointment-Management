@@ -3,12 +3,24 @@ const response = require("../../utils/response");
 
 module.exports = async (req, res, next) => {
   try {
-    const roleId = req.user.roleId;
+    const { roleId } = req.user;
 
     if (!roleId) {
       return response.forbidden(res, {
         message: "Role not found",
       });
+    }
+
+    const role = await db.role.findByPk(roleId);
+
+    if (!role) {
+      return response.forbidden(res, {
+        message: "Role not found",
+      });
+    }
+
+    if (role.name === "Manager") {
+      return next();
     }
 
     const permission = await db.permission.findOne({

@@ -1,3 +1,4 @@
+const { default: httpStatus } = require("http-status");
 class CustomError extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -37,9 +38,16 @@ class InternalServerError extends CustomError {
   }
 }
 
+class ValidationError extends CustomError {
+  constructor(message = "Validation Error") {
+    super(message, httpStatus.UNPROCESSABLE_ENTITY);
+  }
+}
+
 module.exports = {
   CustomError,
   BadRequestError,
+  ValidationError,
   UnauthorizedError,
   ForbiddenError,
   NoDataFoundError,
