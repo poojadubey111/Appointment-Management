@@ -33,18 +33,18 @@ module.exports = (sequelize, DataTypes) => {
         field: "meeting_date",
         allowNull: false,
       },
-
       startTime: {
-        type: DataTypes.TIME,
+        type: DataTypes.DATE,
         field: "start_time",
         allowNull: false,
       },
 
       endTime: {
-        type: DataTypes.TIME,
+        type: DataTypes.DATE,
         field: "end_time",
         allowNull: false,
       },
+
 
       status: {
         type: DataTypes.ENUM(...Object.values(appointmentStatus)

@@ -63,9 +63,11 @@ exports.fetchRolePermissions = async (query) => {
           association: "permission",
           attributes: [
             "id",
-            "baseName",
+            "actionName",
+            "baseUrl",
+            "path",
             "method",
-            "url",
+            "description",
           ],
         },
       ],

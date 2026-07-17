@@ -36,3 +36,58 @@ exports.createUser = async (body) => {
     user
   );
 };
+
+
+exports.fetchUsersForAppointment = async (query) => {
+
+    const {
+        page,
+        limit,
+        offset,
+    } = commonFunctions.getPagination(query);
+
+    const where = commonFunctions.buildQueryFilters(
+        query,
+        [],
+        [
+            "firstName",
+            "lastName",
+            "email",
+        ]
+    );
+
+    where.role = "developer";
+    where.isActive = true;
+
+    const users = await commonFunctions.findAll(
+        "user",
+        {
+            condition: where,
+            attributes: [
+                "id",
+                "firstName",
+                "lastName",
+                "email",
+            ],
+            limit,
+            offset,
+            order: commonFunctions.buildSort(
+                query,
+                [
+                    "firstName",
+                    "lastName",
+                    "createdAt",
+                ]
+            ),
+        }
+    );
+
+    return handleSuccess(
+        "Developers fetched successfully.",
+        commonFunctions.paginatedResponse({
+            page,
+            limit,
+            result: users,
+        })
+    );
+};

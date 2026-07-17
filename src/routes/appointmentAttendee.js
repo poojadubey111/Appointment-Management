@@ -5,34 +5,29 @@ const router = require("express").Router();
 const { errorWrapper } = require("../../utils/commonFunctions");
 
 const {
-  insertUser,
-  getUsers
-} = require("../controller/user");
+  respondAppointment
+} = require("../controller/appointmentAttendee");
 
 const checkAuth = require("../middleware/checkAuth");
 const checkPermission = require("../middleware/checkPermission");
+const validateId = require("../middleware/validateId");
 
 const {
-  createUserValidator,
-} = require("../validator/user");
+respondAppointmentValidator
+} = require("../validator/appointmentAttendee");
 
 const {
   validationHandler,
 } = require("../validator/validationHandler");
 
-router.post(
-  "/",
+router.patch(
+  "/respond/:id",
   checkAuth,
   checkPermission,
-  createUserValidator,
+  validateId,
+  respondAppointmentValidator,
   validationHandler,
-  errorWrapper(insertUser)
+  errorWrapper(respondAppointment)
 );
 
-router.get(
-    "/users",
-    checkAuth,
-    checkPermission,
-    errorWrapper(getUsers)
-);
 module.exports = router;

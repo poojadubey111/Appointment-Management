@@ -97,6 +97,7 @@ exports.findAll = async (model, options = {}) => {
     ...(transaction && { transaction }),
     ...(paranoid !== undefined && { paranoid }),
     ...(subQuery === false && { subQuery }),
+      logging: console.log, 
     distinct,
     raw,
   });
