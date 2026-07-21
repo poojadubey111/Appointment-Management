@@ -35,4 +35,5 @@ router.get(
     checkPermission,
     errorWrapper(getUsers)
 );
+
 module.exports = router;

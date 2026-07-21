@@ -8,6 +8,7 @@ const handleSuccess = require("../../utils/successHandler");
 const {
     BadRequestError,
     NoDataFoundError,
+    ForbiddenError,
 } = require("../../utils/customError");
 
 exports.createAppointment = async (body, userId) => {
@@ -43,7 +44,43 @@ exports.createAppointment = async (body, userId) => {
             "One or more developers not found."
         );
     }
+    const blockedUsers =
+        await commonFunctions.findAllWithoutPagination(
+            "blockedUser",
+            {
+                condition: {
+                    userId: userId,
+                    blockedUserId: {
+                        [Op.in]: body.developerIds,
+                    },
+                },
+            }
+        );
 
+    if (blockedUsers.length) {
+        throw new ForbiddenError(
+            "You cannot schedule appointment with this user."
+        );
+    }
+
+    const blockedByDevelopers =
+        await commonFunctions.findAllWithoutPagination(
+            "blockedUser",
+            {
+                condition: {
+                    userId: {
+                        [Op.in]: body.developerIds,
+                    },
+                    blockedUserId: userId,
+                },
+            }
+        );
+
+    if (blockedByDevelopers.length) {
+        throw new ForbiddenError(
+            "You cannot schedule appointment with this user."
+        );
+    }
     const existingAppointment =
         await commonFunctions.findOne(
             "appointment",
@@ -98,6 +135,7 @@ exports.createAppointment = async (body, userId) => {
             "One or more developers already have an appointment during this time."
         );
     }
+
     const appointment = await commonFunctions.create(
         "appointment",
         {
@@ -130,7 +168,7 @@ exports.createAppointment = async (body, userId) => {
     );
 };
 
-exports.fetchAppointmentDetails = async (query) => {
+exports.fetchAppointmentDetails = async (query,user) => {
 
     const {
         page,
@@ -164,6 +202,7 @@ exports.fetchAppointmentDetails = async (query) => {
         }
     }
 
+    where.managerId = user.id;
     const appointments =
         await commonFunctions.findAll(
             "appointment",
@@ -204,6 +243,7 @@ exports.fetchAppointmentDetails = async (query) => {
                         },
                     },
                 ],
+                    
                 limit,
                 offset,
                 order: commonFunctions.buildSort(
@@ -213,7 +253,7 @@ exports.fetchAppointmentDetails = async (query) => {
                         "createdAt",
                         "title",
                     ],
-                      false
+                    false
                 ),
                 // order: [["meetingDate", "ASC"]],
             }
@@ -228,6 +268,8 @@ exports.fetchAppointmentDetails = async (query) => {
         })
     );
 };
+
+
 
 exports.fetchAppointmentById = async (id) => {
 

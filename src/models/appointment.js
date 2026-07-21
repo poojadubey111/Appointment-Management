@@ -64,19 +64,19 @@ module.exports = (sequelize, DataTypes) => {
 
   appointment.associate = (models) => {
 
-    // Appointment belongs to Manager
+    // appointment belongs to manager
     appointment.belongsTo(models.user, {
       foreignKey: "managerId",
       as: "manager",
     });
 
-    // Appointment has many attendees
+    // appointment has many attendees
     appointment.hasMany(models.appointmentAttendee, {
       foreignKey: "appointmentId",
       as: "attendees",
     });
 
-    // Appointment belongs to many developers
+    // appointment belongs to many developers
     appointment.belongsToMany(models.user, {
       through: models.appointmentAttendee,
       foreignKey: "appointmentId",
