@@ -6,6 +6,7 @@ exports.generateToken = (user) => {
     id: user.id,
     email: user.email,
     roleId: user.roleId,
+    role: user.role.name
   };
 
   return jwt.sign(payload, constants.JWT.SECRET, {
