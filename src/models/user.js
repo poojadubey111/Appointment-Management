@@ -75,13 +75,13 @@ module.exports = (sequelize, DataTypes) => {
 
   user.associate = (models) => {
 
-    // Manager -> Appointments
+    // manager -> appointments
     user.hasMany(models.appointment, {
       foreignKey: "managerId",
       as: "createdAppointments",
     });
 
-    // Developer -> Appointments
+    // developer -> appointments
     user.belongsToMany(models.appointment, {
       through: models.appointmentAttendee,
       foreignKey: "developerId",
@@ -94,23 +94,17 @@ module.exports = (sequelize, DataTypes) => {
       as: "role",
     });
 
-    // Blocked Users
-    user.belongsToMany(models.user, {
-      through: models.blockedUser,
-      foreignKey: "userId",
-      otherKey: "blockedUserId",
-      as: "blockedUsers",
-    });
+   user.hasMany(models.blockedUser, {
+    foreignKey: "userId",
+    as: "blockedUserRecords",
+});
 
-    // Users who blocked me
-    user.belongsToMany(models.user, {
-      through: models.blockedUser,
-      foreignKey: "blockedUserId",
-      otherKey: "userId",
-      as: "blockedByUsers",
-    });
+user.hasMany(models.blockedUser, {
+    foreignKey: "blockedUserId",
+    as: "blockedByRecords",
+});
 
-    // Bulk Upload
+    // bulk upload
     user.hasMany(models.bulkUpload, {
       foreignKey: "uploadedBy",
       as: "bulkUploads",

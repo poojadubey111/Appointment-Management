@@ -8,5 +8,9 @@ router.use("/role-permissions", require("./rolePermission"));
 router.use("/users", require("./user"));
 router.use("/appointments", require("./appointment"));
 router.use("/appointmentAttendee", require("./appointmentAttendee"));
+router.use("/blocked-users", require("./blockedUser"));
+router.use("/bulk-uploads",require("./bulkUpload"));
+
+router.use("/reports",require("./report"));
 
 module.exports = router;

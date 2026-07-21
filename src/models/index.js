@@ -36,9 +36,10 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 // (async () => {
-//   await db.user.sync({ alter: true });
+// await db.bulkUploadError.sync({ alter: true });
 //   console.log("User synced");
 // })();
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

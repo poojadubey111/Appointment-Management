@@ -20,7 +20,8 @@ exports.addAppointment = async (req, res) => {
 
 exports.getAppointment = async (req, res) => {
   const result = await fetchAppointmentDetails(
-    req.query
+    req.query,
+    req.user
   );
 
   return response.ok(res, result);

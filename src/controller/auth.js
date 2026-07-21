@@ -3,7 +3,7 @@ const {
   login,
   forgotPassword,
   resetPassword,
-  logout
+  logout,
 }  = require("../service/auth");
 const response = require("../../utils/response");
 
